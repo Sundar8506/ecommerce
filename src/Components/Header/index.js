@@ -28,17 +28,19 @@ function AppHeader() {
         className="appMenu"
         onClick={onMenuClick}
         mode="horizontal"
+       
         items={[
           {
             label: <HomeFilled />,
             key: "",
           },
+        
           {
             label: "Men",
             key: "men",
             children: [
               {
-                label: "Men's Shirts",
+                label: " Shirts",
                 key: "mens-shirts",
               },
               {
@@ -81,9 +83,22 @@ function AppHeader() {
             label: "Fragrances",
             key: "fragrances",
           },
+          {
+            label: "Furniture",
+            key: "furniture",
+          },
+          {
+            label: "Groceries",
+            key: "groceries",
+          },
+          {
+            label: "Beauty",
+            key: "beauty",
+          },
+        
         ]}
       />
-      <Typography.Title>Sundar Store</Typography.Title>
+      <Typography.Title>Fake Store</Typography.Title>
       <AppCart />
     </div>
   );
@@ -91,26 +106,27 @@ function AppHeader() {
 function AppCart() {
   const [cartDrawerOpen, setCartDrawerOpen] = useState(false);
   const [checkoutDrawerOpen, setCheckoutDrawerOpen] = useState(false);
-  const [cartItems, setCartItems] = useState([]);
+  const [cartItems, setCartItems] = useState([getCart]);
   useEffect(() => {
     getCart().then((res) => {
       setCartItems(res.products);
     });
   }, []);
   const onConfirmOrder = (values) => {
-    console.log({ values });
-    setCartDrawerOpen(true);
+    setCartDrawerOpen(false);
     setCheckoutDrawerOpen(false);
     message.success("order placed successfully.");
   };
 
   return (
-    <div>
+    <div >
       <Badge
+     
         onClick={() => {
           setCartDrawerOpen(true);
         }}
-        count={cartItems.length}
+        
+        count={Array.length}
         className="soppingCartIcon"
       >
         <ShoppingCartOutlined />
@@ -123,7 +139,7 @@ function AppCart() {
         title="Your Cart"
         contentWrapperStyle={{ width: 500 }}
       >
-        <Table
+        <Table 
           pagination={false}
           columns={[
             {
@@ -180,6 +196,7 @@ function AppCart() {
             setCheckoutDrawerOpen(true);
           }}
           type="primary"
+         
         >
           Checkout Your Cart
         </Button>
@@ -232,10 +249,18 @@ function AppCart() {
           <Form.Item>
             <Checkbox>
               Cash on Delivery
+
+            </Checkbox><br/>
+            <br/>
+            <Checkbox>
+            
+           
+            
+             Remind me on Email
             </Checkbox>
           </Form.Item>
           <Typography.Paragraph type="secondary">
-            More methods coming soon
+            More methods coming soon.......!
           </Typography.Paragraph>
           <Button type="primary" htmlType="submit">
             {" "}
