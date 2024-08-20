@@ -11,7 +11,7 @@ import {
   Select,
 } from "antd";
 import { useEffect, useState } from "react";
-import { addToCart, getAllProducts, getProductsByCategory } from "../../API";
+import { getCart,addToCart, getAllProducts, getProductsByCategory } from "../../API";
 import { useParams } from "react-router-dom";
 
 function Products() {
@@ -33,6 +33,7 @@ function Products() {
   const getSortedItems = () => {
     const sortedItems = [...items];
     
+    // eslint-disable-next-line
     sortedItems.sort((a, b) => {
       const aLowerCaseTitle = a.title.toLowerCase();
       const bLowerCaseTitle = b.title.toLowerCase();
@@ -104,13 +105,13 @@ function Products() {
       </div>
       <List
         loading={loading}
-        grid={{ column: 3 }}
+        grid={{ column: 3}}
         renderItem={(product, index) => {
           return (
             <Badge.Ribbon
               className="itemCardBadge"
               text={`${product.discountPercentage}% Off`}
-              color="pink"
+              color="yellow"
             >
               <Card
                 className="itemCard"
@@ -123,6 +124,7 @@ function Products() {
                   <Rate allowHalf disabled value={product.rating} />,
                   <AddToCartButton item={product} />,
                 ]}
+                
               >
                 <Card.Meta
                   title={
@@ -154,21 +156,56 @@ function Products() {
     </div>
   );
 }
-
 function AddToCartButton({ item }) {
+
   const [loading, setLoading] = useState(false);
   const addProductToCart = () => {
     setLoading(true);
     addToCart(item.id).then((res) => {
       message.success(`${item.title} has been added to cart!`);
       setLoading(false);
-    });
-  };
+      
+ 
+ 
+ 
+  const existingProductIds = JSON.parse(localStorage.getItem('cartProductIds')) || [];
+
+    
+    if (!existingProductIds.includes(item.id)) {
+      existingProductIds.push(item.id);
+      localStorage.setItem('cartProductIds', JSON.stringify(existingProductIds));
+    }
+    updateCart();
+  }).catch((error) => {
+    setLoading(false);
+    message.error('Failed to add product to cart');
+  });
+};
+ const updateCart = () => {
+    const productIds = JSON.parse(localStorage.getItem('cartProductIds')) || [];
+    if (productIds.length > 0) {
+
+     // eslint-disable-next-line no-restricted-globals
+  
+  
+  getCart(productIds).then((res) => {
+    
+    
+  
+  }).catch((error) => {
+    
+    message.error('Failed to add product to cart');
+  });
+ }
+};
   return (
     <Button
       type="link"
+      id={item.id}
       onClick={() => {
         addProductToCart();
+      
+        
       }}
       loading={loading}
     >
@@ -176,4 +213,5 @@ function AddToCartButton({ item }) {
     </Button>
   );
 }
+
 export default Products;
