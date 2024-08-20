@@ -1,3 +1,5 @@
+import Item from "antd/es/list/Item";
+
 export const getAllProducts = () => {
   return fetch("https://dummyjson.com/products").then((res) => res.json());
 };
@@ -6,8 +8,27 @@ export const getProductsByCategory = (category) => {
     (res) => res.json()
   );
 };
-export const getCart = () => {
-  return fetch("https://dummyjson.com/carts/5").then((res) => res.json());
+export const getCart = (cartProductIds) => {
+  
+
+  return fetch("https://dummyjson.com/carts/add", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      userId: 1,
+      products: [
+        {
+          id:cartProductIds,
+          
+
+               
+        
+        },
+        
+        console.log(cartProductIds)
+      ],
+    }),
+  }).then((res) => res.json());
 };
 
 export const addToCart = (id) => {
@@ -19,7 +40,7 @@ export const addToCart = (id) => {
       products: [
         {
           id: id,
-          quantity: 1,
+          quantity:4,
         },
       ],
     }),
